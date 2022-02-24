@@ -25,7 +25,9 @@ services:
     volumes:
       - '.:/app'
     environment:
-      - 'DATABASE_PASSWORD=postgres'
+      - 'RAILS_ENV=development'
+      - 'DATABASE_PORT=5432'
+      - 'DATABASE_HOST=db'
     tty: true
     stdin_open: true
     depends_on:
