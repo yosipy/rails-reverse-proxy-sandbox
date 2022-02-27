@@ -3,7 +3,8 @@ class WordpressController < ApplicationController
   require 'net/http'
 
   def index
-    path = "/#{params[:path]}"
+    # path = "/#{params[:path]}"
+    path = request.fullpath.sub('/blog', '')
 
     reverse_proxy 'http://wordpress:80', path: path, reset_accept_encoding: true,
       headers: {
