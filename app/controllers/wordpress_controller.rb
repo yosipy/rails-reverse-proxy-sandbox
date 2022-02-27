@@ -5,7 +5,11 @@ class WordpressController < ApplicationController
   def index
     path = "/#{params[:path]}"
 
-    reverse_proxy 'http://wordpress:80', path: path, reset_accept_encoding: true, headers: { 'host' => 'localhost:8000' } do |config|
+    reverse_proxy 'http://wordpress:80', path: path, reset_accept_encoding: true,
+      headers: {
+        'host' => 'localhost:8000',
+        'Authorization'=> "Basic #{Base64.encode64('user:pass')}"
+      } do |config|
       config.on_response do |code, response|
         response.body = rewrite_links(response.body)
       end

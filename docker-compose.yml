@@ -24,7 +24,9 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
     volumes:
-      - ./wp-config.php:/var/www/html/wp-config.php
+      # - ./wp-config.php:/var/www/html/wp-config.php
+      - ./.htpasswd:/var/www/html/.htpasswd
+      - ./.htaccess:/var/www/.htaccess
 
   rails_db:
     image: postgres:13.4
