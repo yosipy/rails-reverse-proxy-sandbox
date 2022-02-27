@@ -3,9 +3,14 @@ class WordpressController < ApplicationController
   require 'net/http'
 
   def index
-    path = "/#{params[:path]}"
+    # path = "/#{params[:path]}"
+    path = request.fullpath.sub('/blog', '')
 
-    reverse_proxy 'http://wordpress:80', path: path, reset_accept_encoding: true, headers: { 'host' => 'localhost:8000' } do |config|
+    reverse_proxy 'http://wordpress:80', path: path, reset_accept_encoding: true,
+      headers: {
+        'host' => 'localhost:8000',
+        'Authorization'=> "Basic #{Base64.encode64('user:pass')}"
+      } do |config|
       config.on_response do |code, response|
         response.body = rewrite_links(response.body)
       end
@@ -25,6 +30,7 @@ class WordpressController < ApplicationController
     #                   .gsub("localhost:3000/blog/wp-content", "localhost:8000/wp-content")
 
     parsed_html = html.gsub("localhost:8000/posts", "localhost:3000/blog/posts")
+                      .gsub('"http://localhost:8000"', '"http://localhost:3000"')
 
     # parsed_html.html_safe
   end
