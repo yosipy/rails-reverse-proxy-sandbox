@@ -30,6 +30,7 @@ class WordpressController < ApplicationController
     #                   .gsub("localhost:3000/blog/wp-content", "localhost:8000/wp-content")
 
     parsed_html = html.gsub("localhost:8000/posts", "localhost:3000/blog/posts")
+                      .gsub('"http://localhost:8000"', '"http://localhost:3000"')
 
     # parsed_html.html_safe
   end
