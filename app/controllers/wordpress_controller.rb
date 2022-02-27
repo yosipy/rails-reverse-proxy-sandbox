@@ -9,6 +9,13 @@ class WordpressController < ApplicationController
       config.on_response do |code, response|
         response.body = rewrite_links(response.body)
       end
+
+      # remove cookies from wp: wordpress_logged_in_, wordpress_*_cookie, wp-settings-time-*, wp-settings-*
+      cookie_keys = cookies.to_h.keys
+      wordpress_cookie_keys = cookie_keys.grep(/^wordpress_|^wp-settings-/)
+      wordpress_cookie_keys.each do |wordpress_cookie_key|
+        cookies.delete(wordpress_cookie_key)
+      end
     end
   end
 
